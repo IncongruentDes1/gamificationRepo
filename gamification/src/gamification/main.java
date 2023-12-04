@@ -1,11 +1,24 @@
 package gamification;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class main {
 	public static Float currentStats= 0F;
@@ -15,11 +28,39 @@ public class main {
 		ArrayList<points> prizes = fileReadIn("prizes.txt");
 		currentStats = checkStats();
 		System.out.println(currentStats);
-		updatestats("9");
+		updatestats("8");
 		currentStats = checkStats();
 		System.out.println(currentStats);
+		
+		createInterface();
 
 	}
+public static void createInterface() {
+		
+		// - Basic JFrame Set up
+		   JFrame frame = new JFrame("Level Print");
+	       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	       
+	       JPanel pane = new JPanel();
+	       JLabel label = new JLabel("Current Number of Points: " + currentStats);
+
+	       frame.add(pane);
+	       pane.add(label);
+	       
+	       
+	       frame.pack();
+	        frame.setVisible(true);
+	        }
+	
+public static void updateTasks() {
+	
+}
+
+public static void updatePrizes() {
+	
+}
+
+	
 	
 	// convenience print function
 	public static void printOut(ArrayList<points> lst) {
