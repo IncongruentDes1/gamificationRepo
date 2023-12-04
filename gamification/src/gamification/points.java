@@ -1,5 +1,5 @@
 package gamification;
 
-public class prize {
+public class points {
 
 }
