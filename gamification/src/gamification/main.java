@@ -27,16 +27,21 @@ import javax.swing.JCheckBox;
 public class main {
 	public static Float currentStats= 0F;
 	public static ArrayList<JCheckBox> boxeslist;
+	public static ArrayList<points> tasksList;
 
 	public static void main(String[] args) {
 		// values handling
 		boxeslist = new ArrayList<JCheckBox>();
+		tasksList = new ArrayList<points>();
 		ArrayList<points> tasks = fileReadIn("tasks.txt");
 		ArrayList<points> prizes = fileReadIn("prizes.txt");
+		tasksList.addAll(prizes);
+		tasksList.addAll(tasks);
 		
 		//running function
 		currentStats = checkStats();
 		createInterface(tasks, prizes);
+		checkBoxPossible();
 		
 		
 		
@@ -73,7 +78,10 @@ public static void createInterface(ArrayList<points> tasks, ArrayList<points> pr
 	       submitPanel.add(submitButton);
 	       submitButton.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
-	            	printOutBox(boxeslist);
+	            	printOut(tasks);
+	            	updateStats(tasksList);
+	            	label.setText("Current Number of Points: " + currentStats);
+	            	checkBoxPossible();
 	            }
 	       });
 	       
@@ -84,17 +92,44 @@ public static void createInterface(ArrayList<points> tasks, ArrayList<points> pr
 	       frame.pack();
 	        frame.setVisible(true);
 	        }
-	
-public static void checkboxHandling(Box box, ArrayList<points>lst, JLabel label) {
-	box.add(label);
-	for (int x = 0; x < lst.size(); x++) {
-		JCheckBox checkbox = new JCheckBox(lst.get(x).name + " Points: " + lst.get(x).cost);
-		box.add(checkbox);
-		boxeslist.add(checkbox);
-	}
-	
-}
 
+		public static void checkBoxPossible() {
+			for (points x: tasksList) {
+				if (x.cost > currentStats && x.isPos == false) {
+					x.cb.setEnabled(false);
+				}
+				else {
+					x.cb.setEnabled(true);
+				}
+				x.cb.setSelected(false);
+			}
+		}
+			
+		public static void checkboxHandling(Box box, ArrayList<points>lst, JLabel label) {
+			box.add(label);
+			for (int x = 0; x < lst.size(); x++) {
+				box.add(lst.get(x).cb);
+			}
+			
+		}
+
+	public static void updateStats(ArrayList<points> lst) {
+		for (int x = 0; x < lst.size(); x++) {
+			points curVal = lst.get(x);
+			
+			if (curVal.cb.isSelected()) {
+				if(curVal.isPos) {
+					currentStats += curVal.cost;
+				}
+				else {
+					currentStats -= curVal.cost;
+				}
+				 updateFile(currentStats.toString());
+			}
+			
+			
+		}
+	}
 
 
 	
@@ -103,6 +138,8 @@ public static void checkboxHandling(Box box, ArrayList<points>lst, JLabel label)
 	public static void printOut(ArrayList<points> lst) {
 		for (int x = 0; x < lst.size(); x++) {
 			System.out.println(lst.get(x));
+			System.out.println(lst.get(x).cb.isSelected());
+			System.out.println(lst.get(x).cost);
 		}
 	}
 	
@@ -115,7 +152,7 @@ public static void checkboxHandling(Box box, ArrayList<points>lst, JLabel label)
 	}
 	
 	// function to set new stats
-	public static void updatestats(String newNum) {
+	public static void updateFile(String newNum) {
 		try {
 			FileWriter myWriter = new FileWriter("curStats.txt");
 			myWriter.write(newNum);

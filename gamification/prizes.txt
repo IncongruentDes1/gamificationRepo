@@ -3,7 +3,7 @@ false
 Planned Bakery Outing -10
 Fast Food-20
 Go to Movies-50
-Go to the Cat Caf�-50
+Go to the Cat Cafe-50
 Get a Message-100
 Get a Piercing-150
 Buy Lies of P-180
