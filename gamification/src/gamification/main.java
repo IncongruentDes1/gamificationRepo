@@ -2,6 +2,7 @@ package gamification;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,46 +22,80 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JCheckBox;
 
 public class main {
 	public static Float currentStats= 0F;
+	public static ArrayList<JCheckBox> boxeslist;
 
 	public static void main(String[] args) {
+		// values handling
+		boxeslist = new ArrayList<JCheckBox>();
 		ArrayList<points> tasks = fileReadIn("tasks.txt");
 		ArrayList<points> prizes = fileReadIn("prizes.txt");
-		currentStats = checkStats();
-		System.out.println(currentStats);
-		updatestats("8");
-		currentStats = checkStats();
-		System.out.println(currentStats);
 		
-		createInterface();
+		//running function
+		currentStats = checkStats();
+		createInterface(tasks, prizes);
+		
+		
+		
 
 	}
-public static void createInterface() {
+public static void createInterface(ArrayList<points> tasks, ArrayList<points> prizes) {
 		
 		// - Basic JFrame Set up
 		   JFrame frame = new JFrame("Level Print");
 	       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       
-	       JPanel pane = new JPanel();
-	       JLabel label = new JLabel("Current Number of Points: " + currentStats);
-
-	       frame.add(pane);
-	       pane.add(label);
+			// - Panel set up
+	       JPanel pointsPanel = new JPanel();	       
+	       JPanel submitPanel = new JPanel();
+	       Box tasksBox = Box.createVerticalBox();
+	       Box prizesBox = Box.createVerticalBox();
 	       
+	       // - points handling
+	       JLabel label = new JLabel("Current Number of Points: " + currentStats);
+	       pointsPanel.add(label);
+	       
+	       //task handling
+	       JLabel taskLabel = new JLabel("Tasks");
+	       checkboxHandling(tasksBox, tasks, taskLabel);
+	       
+	       // prize handling
+	       JLabel prizeLabel = new JLabel ("Prizes");
+	       checkboxHandling(prizesBox, prizes, prizeLabel);
+
+	       
+	       
+	       // - submit button set up
+	       JButton submitButton = new JButton("Submit");
+	       submitPanel.add(submitButton);
+	       submitButton.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	            	printOutBox(boxeslist);
+	            }
+	       });
+	       
+	       
+	       // -adding panels/end of frame set up
+	       frame.add(pointsPanel, BorderLayout.NORTH); frame.add(tasksBox, BorderLayout.WEST); frame.add(prizesBox, BorderLayout.EAST); frame.add(submitPanel, BorderLayout.SOUTH);
 	       
 	       frame.pack();
 	        frame.setVisible(true);
 	        }
 	
-public static void updateTasks() {
+public static void checkboxHandling(Box box, ArrayList<points>lst, JLabel label) {
+	box.add(label);
+	for (int x = 0; x < lst.size(); x++) {
+		JCheckBox checkbox = new JCheckBox(lst.get(x).name + " Points: " + lst.get(x).cost);
+		box.add(checkbox);
+		boxeslist.add(checkbox);
+	}
 	
 }
 
-public static void updatePrizes() {
-	
-}
+
 
 	
 	
@@ -66,6 +103,14 @@ public static void updatePrizes() {
 	public static void printOut(ArrayList<points> lst) {
 		for (int x = 0; x < lst.size(); x++) {
 			System.out.println(lst.get(x));
+		}
+	}
+	
+	public static void printOutBox(ArrayList<JCheckBox> lst) {
+		for (int x = 0; x < lst.size(); x++) {
+			System.out.println(lst.get(x).getText());
+			Boolean isOn = lst.get(x).isSelected();
+			System.out.println(isOn);
 		}
 	}
 	
@@ -106,12 +151,14 @@ public static void updatePrizes() {
 		try {
 			File newFile = new File(fileName);
 			Scanner scanner = new Scanner(newFile);
+			Boolean type = Boolean.parseBoolean(scanner.nextLine());
+			
 
 			while (scanner.hasNextLine()) {
 				// - Going through Lines
 				String curLine = scanner.nextLine();
 				String[] split = curLine.split("-");
-				points curTask = new points(split[0], Float.parseFloat(split[1]));
+				points curTask = new points(split[0], Float.parseFloat(split[1]), type);
 				tasks.add(curTask);
 								
 				}

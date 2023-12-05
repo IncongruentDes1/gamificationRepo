@@ -1,3 +1,4 @@
+true
 Drink Water-0.5
 Duo Lingo (.5 hour)-0.5
 Christmas Planning (.5 hour)-0.5
