@@ -1,33 +1,25 @@
 package gamification;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JCheckBox;
+import javax.swing.*;
 
 public class main {
 	public static Float currentStats= 0F;
 	public static ArrayList<JCheckBox> boxeslist;
 	public static ArrayList<points> tasksList;
+    public static Box tasksBox = Box.createVerticalBox();
+    public static Box prizesBox = Box.createVerticalBox();
+	public static screen mainFrame;
 
 	public static void main(String[] args) {
 		// values handling
@@ -43,6 +35,8 @@ public class main {
 		createInterface(tasks, prizes);
 		checkBoxPossible();
 		
+
+//		removingInterface(tasksList);
 		
 		
 
@@ -50,18 +44,15 @@ public class main {
 public static void createInterface(ArrayList<points> tasks, ArrayList<points> prizes) {
 		
 		// - Basic JFrame Set up
-		   JFrame frame = new JFrame("Level Print");
-	       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		  mainFrame = new screen("Level Print");
 	       
 			// - Panel set up
-	       JPanel pointsPanel = new JPanel();	       
 	       JPanel submitPanel = new JPanel();
-	       Box tasksBox = Box.createVerticalBox();
-	       Box prizesBox = Box.createVerticalBox();
+
 	       
 	       // - points handling
 	       JLabel label = new JLabel("Current Number of Points: " + currentStats);
-	       pointsPanel.add(label);
+	       mainFrame.topPanel.add(label);
 	       
 	       //task handling
 	       JLabel taskLabel = new JLabel("Tasks");
@@ -71,27 +62,92 @@ public static void createInterface(ArrayList<points> tasks, ArrayList<points> pr
 	       JLabel prizeLabel = new JLabel ("Prizes");
 	       checkboxHandling(prizesBox, prizes, prizeLabel);
 
-	       
-	       
 	       // - submit button set up
-	       JButton submitButton = new JButton("Submit");
-	       submitPanel.add(submitButton);
-	       submitButton.addActionListener(new ActionListener() {
+	       JButton addButton = new JButton ("Add an Entry");
+	       JButton removeButton = new JButton("Remove an Entry");
+	       mainFrame.bottomPanel.add(addButton); mainFrame.bottomPanel.add(removeButton);
+	       mainFrame.submitButton.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
 	            	printOut(tasks);
 	            	updateStats(tasksList);
 	            	label.setText("Current Number of Points: " + currentStats);
 	            	checkBoxPossible();
+	            	
 	            }
 	       });
 	       
+	       // - add handling
+	      addButton.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	     	       addingInterface();
+	     	       updateStats(tasksList);
+	     	       
+
+	     	       
+	            }
+	       });
+	       
+	       //-remove handling
+	       removeButton.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	            	removingInterface( tasksList);
+	            }
+	       });
+
+	       
 	       
 	       // -adding panels/end of frame set up
-	       frame.add(pointsPanel, BorderLayout.NORTH); frame.add(tasksBox, BorderLayout.WEST); frame.add(prizesBox, BorderLayout.EAST); frame.add(submitPanel, BorderLayout.SOUTH);
+	        mainFrame.leftPanel.add(tasksBox, BorderLayout.WEST); mainFrame.rightPanel.add(prizesBox, BorderLayout.EAST);   
+	       mainFrame.pack();
+	        }
+
+	public static void removingInterface(ArrayList<points> lst) {
+		screen frame = new screen("Adjust Inputs");
+		for (points x: lst) {
+			x.cb.setEnabled(true);
+			frame.centerBox.add(x.cb);
+		}
+		  frame.submitButton.setText("Remove entries");
+	       frame.pack();
+	}
+
+	public static void addingInterface() {
+		// - Basic JFrame Set up
+		  screen frame = new screen("Adding Tasks and Rewards");
+	      
+	       // - General object set up
+	       JTextField taskInput =new JTextField(10);
+	       JTextField numInput  =new JTextField(10);
+	       JLabel label = new JLabel("Please Enter the Task/Reward and # of Points");
+	       
+	       // Button creation/handling
+	       ButtonGroup buttonGroup = new ButtonGroup();
+	       JRadioButton addTaskButton = new JRadioButton("Task");
+	       JRadioButton addRewardButton = new JRadioButton("Reward");
+	       buttonGroup.add(addRewardButton); buttonGroup.add(addTaskButton);
+	       
+	       frame.submitButton.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	            	System.out.println("clicked");
+	            	if (addTaskButton.isEnabled()) {
+	            		addValue("tasks.txt", taskInput.getText(),numInput.getText()); 
+	            	}
+	            	else {
+	            		addValue("prizes.txt",  taskInput.getText(),numInput.getText()) ;
+	            		
+	            	}
+
+	            }
+	       });
+	       
+	       // - adding section
+	       frame.topPanel.add(label);
+	       frame.leftPanel.add(taskInput); frame.leftPanel.add(numInput);
+	       frame.rightPanel.add(addTaskButton); frame.rightPanel.add(addRewardButton);
 	       
 	       frame.pack();
-	        frame.setVisible(true);
-	        }
+	       
+	}
 
 		public static void checkBoxPossible() {
 			for (points x: tasksList) {
@@ -112,6 +168,14 @@ public static void createInterface(ArrayList<points> tasks, ArrayList<points> pr
 			}
 			
 		}
+	public static void updateBoxes(screen frame, ArrayList<points> lst) {
+		Box newBox =  Box.createVerticalBox();
+		for (points x: lst) {
+			newBox.add(x.cb);
+		}
+		frame.centerBox = newBox;
+	}
+		
 
 	public static void updateStats(ArrayList<points> lst) {
 		for (int x = 0; x < lst.size(); x++) {
@@ -126,11 +190,38 @@ public static void createInterface(ArrayList<points> tasks, ArrayList<points> pr
 				}
 				 updateFile(currentStats.toString());
 			}
-			
-			
+
 		}
 	}
+	
+	public static void addValue(String textFile, String task, String num) {
+		String text =  task +"-"+num;
+		Writer output;
+		try {
+			output = new BufferedWriter(new FileWriter(textFile, true));
+			output.append(System.getProperty("line.separator"));
+			output.append(text);
+			output.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (textFile == "curStats.txt"){
+				
+		}
+		else {
+			
+		}
+	     
+		
 
+		
+	}
+	
+	public void removeValue() {
+		
+	}
+
+	
 
 	
 	
