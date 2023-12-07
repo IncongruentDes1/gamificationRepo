@@ -30,7 +30,7 @@ public class screen extends JFrame {
 	
 	
 	public screen(String Name) {
-		name = Name;
+		this.setTitle(Name);
 
 //		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(topPanel, BorderLayout.NORTH);
