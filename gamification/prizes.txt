@@ -1,11 +1,8 @@
-false
-1 Hour of PS5 time-5
-Planned Bakery Outing -10
-Fast Food-20
-Go to Movies-50
-Go to the Cat Cafe-50
-Get a Message-100
-Get a Piercing-150
-Buy Lies of P-180
-Buy Avatar Game-240
-Get a Tattoo-300
+Fast Food-20.0
+Go to Movies-50.0
+Go to the Cat Cafe-50.0
+Get a Message-100.0
+Get a Piercing-150.0
+Buy Lies of P-180.0
+Buy Avatar Game-240.0
+Get a Tattoo-300.0

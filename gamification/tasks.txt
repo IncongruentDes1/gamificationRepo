@@ -1,21 +1,26 @@
-true
-Drink Water-0.5
-Duo Lingo (.5 hour)-0.5
-Christmas Planning (.5 hour)-0.5
-Duo Lingo (1 hour)-1
-Christmas Planning (1 hour)-1
-Stretching-1
-Shower-1
-Brush Teeth-1
-Set up for the Morning-1
-Make the Bed-1
-Clean up a Room of Choice-1
-Swap a Load of Laundry Over-1
-Go to the Gym-2
-Fold Laundry-2
-Put Away Dishes-2
-Pack and Bring Lunch-2
-Wash Sheets-3
-Vacuum-3
-Review Finances/Pay Bills-3
-eat cheese-3
+Drink Water-0.5-true
+Duo Lingo (.5 hour)-0.5-true
+Christmas Planning (.5 hour)-0.5-true
+Duo Lingo (1 hour)-1.0-true
+Christmas Planning (1 hour)-1.0-true
+Stretching-1.0-true
+Shower-1.0-true
+Brush Teeth-1.0-true
+Set up for the Morning-1.0-true
+Make the Bed-1.0-true
+Clean up a Room of Choice-1.0-true
+Swap a Load of Laundry Over-1.0-true
+Go to the Gym-2.0-true
+Fold Laundry-2.0-true
+Put Away Dishes-2.0-true
+Pack and Bring Lunch-2.0-true
+Wash sheets-3.0-true
+Vaccuum-3.0-true
+Fast Food-20.0-false
+Go to Movies-50.0-false
+Go to the Cat Cafe-50.0-false
+Get a Message-100.0-false
+Get a Piercing-150.0-false
+Buy Lies of P-180.0-false
+Buy Avatar Game-240.0-false
+Get a Tattoo-300.0-false

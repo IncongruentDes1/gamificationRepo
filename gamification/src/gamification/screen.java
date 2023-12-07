@@ -31,8 +31,7 @@ public class screen extends JFrame {
 	
 	public screen(String Name) {
 		name = Name;
-		
-		
+
 //		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(topPanel, BorderLayout.NORTH);
 		this.add(centerBox, BorderLayout.CENTER);
@@ -41,11 +40,28 @@ public class screen extends JFrame {
 		this.add(rightPanel, BorderLayout.EAST);
 		
 		bottomPanel.add(submitButton);
-		
-		
-		
+
 	    this.pack();
 	    this.setVisible(true);
+	}
+	
+	
+	
+	
+	// - Check Box Handling
+	public void addCheckBox(ArrayList<points> lst) {
+		for (points x: lst) {
+			centerBox.add(x.cb);
+		}
+		this.pack();
+	}
+	
+	public void addCheckBox(points x) {
+		centerBox.add(x.cb);
+	}
+	
+	public void removeCheckBox(points x) {
+		centerBox.remove(x.cb);
 	}
 
 }

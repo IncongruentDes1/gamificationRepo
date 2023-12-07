@@ -10,8 +10,14 @@ public class points {
 	
 	public points(String Name, Float Cost, Boolean Type) {
 		name = Name;
-		cost = Cost;
 		isPos = Type;
+		
+		if (isPos == false) {
+			cost = Cost - (Cost *2);
+		}
+		else {
+			cost = Cost;
+		}
 		cb = new JCheckBox(name + " points: " + cost);
 	}
 	
