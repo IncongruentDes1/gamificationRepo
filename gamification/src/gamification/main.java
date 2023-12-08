@@ -36,8 +36,6 @@ public class main {
 		// - label
 		JLabel title = new JLabel("Please Enter the name of the Task and Associated Points");
 		addPanel.topPanel.add(title);
-
-
 		
 		// -text boxes
 		JTextField taskName = new JTextField(10);
@@ -49,6 +47,13 @@ public class main {
 		JRadioButton prizeButton = new JRadioButton("prize");
 		ButtonGroup group = new ButtonGroup(); group.add(prizeButton); group.add(taskButton);
 		addPanel.centerBox.add(taskButton); addPanel.centerBox. add(prizeButton);
+		
+		// - listener
+		addPanel.submitButton.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  System.out.println("submit clicked");
+			  } 
+			} );
 		
 		addPanel.pack();
 	}
@@ -70,7 +75,7 @@ public class main {
 	}
 	
 	
-	// - main panel work
+	// - MAIN Panel Work - functional
 	public static void mainPanelSetUp() throws FileNotFoundException {
 		mainPanel = new screen("Main Interface");
 		tasks = fileReadIn("tasks.txt");
@@ -117,12 +122,7 @@ public class main {
 		mainPanel.pack();
 	}
 	
-	
 
-	
-
-	
-	
 	
 	// -  Task Sheet Handling: Read in
 	public static ArrayList<points> fileReadIn(String fileName) throws FileNotFoundException {
