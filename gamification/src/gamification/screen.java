@@ -17,9 +17,6 @@ import java.awt.*;
 import javax.swing.*;
 
 public class screen extends JFrame {
-	// Naming/info
-	String name;
-	
 	// Parts
 	public JPanel topPanel = new JPanel();
 	public Box centerBox = Box.createVerticalBox();
@@ -48,19 +45,19 @@ public class screen extends JFrame {
 	
 	
 	
-	// - Check Box Handling
-	public void addCheckBox(ArrayList<points> lst) {
-		for (points x: lst) {
+	// - CHECKBOX HANDLING  -------------------------------------------------------------------------------------------------------------------------
+	public void addCheckBox(ArrayList<entries> lst) {
+		for (entries x: lst) {
 			centerBox.add(x.cb);
 		}
 		this.pack();
 	}
 	
-	public void addCheckBox(points x) {
+	public void addCheckBox(entries x) {
 		centerBox.add(x.cb);
 	}
 	
-	public void removeCheckBox(points x) {
+	public void removeCheckBox(entries x) {
 		centerBox.remove(x.cb);
 	}
 
