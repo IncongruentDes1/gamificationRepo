@@ -13,6 +13,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
+import java.lang.Math;
 
 public class main {
 	public static Float currentStats= 0F;
@@ -51,27 +52,56 @@ public class main {
 		// - listener
 		addPanel.submitButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  System.out.println("submit clicked");
+				  points newEntry;
+				  if (taskButton.isSelected()) {
+					  newEntry = new points(taskName.getText(), Float.parseFloat(amount.getText()), true);
+				  }
+				  else {
+					  newEntry = new points(taskName.getText(), Float.parseFloat(amount.getText()), false);
+				  }
+				  try {
+					newEntry(newEntry);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			  } 
 			} );
 		
 		addPanel.pack();
 	}
 	
-	// - Remove Panel work
-	public static void removePanelSetUp() {
-		removePanel = new screen ("Removing Entries");
-		
-		JLabel title = new JLabel("Please Select the Entries you would like to remove from the Task List");
-		removePanel.topPanel.add(title);
-		
+	//-adding/updating 
+	public static void newEntry(points entry) throws IOException {
+		tasks.add(entry);
+		mainPanel.addCheckBox(entry);
+		mainPanel.pack();
+		refreshSaveData();
+	}
+	
+	public static void removeEntry(points entry) throws IOException {
+		tasks.remove(entry);
 		for (points task: tasks) {
-			removePanel.centerBox.add(task.cb);
+			System.out.println(task);
 		}
-		
-		
-		
-		removePanel.pack();
+		refreshSaveData();
+		mainPanel.addCheckBox(tasks);
+	}
+	
+	
+	
+	
+	
+	// - resetting files
+	public static void refreshSaveData() throws IOException {
+		File file =new File("tasks.txt");
+		Writer fileWriter = new FileWriter(file);
+		for (points task: tasks) {
+			String tempFormat = (task.name + "-" + Math.abs(task.cost) + "-" + task.isPos);
+			fileWriter.write(tempFormat);
+			fileWriter.write(System.getProperty("line.separator"));
+		}
+		fileWriter.close();
 	}
 	
 	
@@ -112,7 +142,16 @@ public class main {
 		// - Removal
 		removeButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-					removePanelSetUp();
+				  	for (int x = 0; x < tasks.size(); x++) {
+				  		if (tasks.get(x).cb.isSelected()) {
+				  			try {
+								removeEntry(tasks.get(x));
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+				  		}
+				  	}
 			  } 
 			} );
 		
