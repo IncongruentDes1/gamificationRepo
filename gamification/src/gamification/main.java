@@ -49,6 +49,7 @@ public class main {
 				  System.out.println("submit clicked");
 				  try {
 					statsUpdate("curStats.txt", curentries);
+					checkboxUpdates(tasks);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}		  } 	} );
@@ -57,7 +58,9 @@ public class main {
 		addButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
 					addPanelSetUp();
-			  } 	} );
+					checkboxUpdates(tasks);
+			  }
+			  } );
 		
 		// - Removal
 		removeButton.addActionListener(new ActionListener() { 
@@ -66,10 +69,14 @@ public class main {
 				  		if (tasks.get(x).cb.isSelected()) {
 				  			try {
 								removeEntry(tasks.get(x));
+								checkboxUpdates(tasks);
 							} catch (IOException e1) {
 								e1.printStackTrace();
-							}	}	}  } 
+							}
+				  		}	}  } 
 			} );
+		
+		checkboxUpdates(tasks);
 		mainPanel.bottomPanel.add(addButton); mainPanel.bottomPanel.add(removeButton); mainPanel.topPanel.add(curentries);
 		mainPanel.pack();
 	}
@@ -110,7 +117,7 @@ public class main {
 				}
 			  } 
 			} );
-		
+		checkboxUpdates(tasks);
 		addPanel.pack();
 	}
 	
@@ -132,6 +139,18 @@ public class main {
 		refreshSaveData();
 		mainPanel.removeCheckBox(entry);
 		mainPanel.addCheckBox(tasks);
+	}
+	
+	// - enabling/disabling checkboxes
+	public static void checkboxUpdates (ArrayList<entries> lst) {
+		for (entries task: lst) {
+			if (currentStats < Math.abs(task.cost) && task.isPos == false) {
+				task.cb.setEnabled(false);
+			}
+			else {
+				task.cb.setEnabled(true);
+			}
+		}
 	}
 	
 	
