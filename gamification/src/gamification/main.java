@@ -104,6 +104,7 @@ public class main {
 		addPanel.submitButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
 				  entries newEntry;
+				  if (isNumeric(amount.getText())) {
 				  if (taskButton.isSelected()) {
 					  newEntry = new entries(taskName.getText(), Float.parseFloat(amount.getText()), true);
 				  }
@@ -115,6 +116,7 @@ public class main {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				  }
 			  } 
 			} );
 		checkboxUpdates(tasks);
@@ -152,6 +154,17 @@ public class main {
 			}
 		}
 	}
+	
+	public static boolean isNumeric(String str) { 
+		  try {  
+		    Float.parseFloat(str);  
+		    return true;
+		  } catch(NumberFormatException e){  
+		    return false;  
+		  }  
+		}
+	
+
 	
 	
 
